@@ -2,7 +2,7 @@ from src.data_loader import load_sales_data
 from src.features import create_features
 from src.model import train_xgboost
 
-df = load_sales_data("data/synthetic_salmon_sales.csv")
+df = load_sales_data("data/fishmonger_sales .csv")
 
 df = create_features(df)
 
