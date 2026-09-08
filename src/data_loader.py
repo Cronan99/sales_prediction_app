@@ -3,7 +3,7 @@ import re
 
 import pandas as pd
 
-REQUIRED_COLUMNS = ["date", "product_name", "amount_sold", "price_per_unit"]
+REQUIRED_COLUMNS = {"date", "product", "amount", "price"}
 
 def load_sales_data(file_path: str | Path) -> pd.DataFrame:
     """
@@ -33,9 +33,9 @@ def load_sales_data(file_path: str | Path) -> pd.DataFrame:
             f"Missing required columns: {sorted(missing_columns)}."
         )
 
-    df["date"] = pd.to_datetime(df[df["date"]])
+    df["date"] = pd.to_datetime(df["date"])
 
-    df["amount_sold"] = pd.to_numeric(df["amount_sold"], errors="raise")
-    df["price_per_unit"] = pd.to_numeric(df["price_per_unit"], errors="raise")
+    df["amount"] = pd.to_numeric(df["amount"], errors="raise")
+    df["price"] = pd.to_numeric(df["price"], errors="raise")
 
     return df
