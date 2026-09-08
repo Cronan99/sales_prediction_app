@@ -1,44 +1,69 @@
 import pandas as pd
+
 from sklearn.metrics import mean_absolute_error, mean_squared_error
+from xgboost import XGBRegressor
 
+def train_xgboost(df: pd.DataFrame):
 
-def create_baseline_predictions(df: pd.DataFrame) -> pd.DataFrame:
-    """
-    Create a naive sales forecast.
-
-    Baseline:
-    Predict that each product will sell the same amount
-    as it did on its previous recorded sale date.
-    """
     df = df.copy()
-    df = df.sort_values(["product", "date"])
 
-    df["baseline_prediction"] = (
-        df.groupby("product")["amount"]
-        .shift(1)
+    df["product_name"] = df["product"]
+
+    df = pd.get_dummies(
+        df,
+        columns=["product"],
+        dtype=int
     )
 
-    return df
+    df = df.dropna()
 
+    split_index = int(len(df) * 0.8)
 
-def evaluate_baseline(df: pd.DataFrame) -> dict:
-    """
-    Evaluate baseline predictions using MAE and RMSE.
-    """
+    train_df = df.iloc[:split_index]
+    test_df = df.iloc[split_index:]
 
-    evaluation_df = df.dropna(subset=["baseline_prediction"])
+    feature_columns = [
+        col
+        for col in df.columns
+        if col not in ["date", "amount", "product_name"]
+    ]
 
-    y_true = evaluation_df["amount"]
-    y_pred = evaluation_df["baseline_prediction"]
+    X_train = train_df[feature_columns]
+    y_train = train_df["amount"]
 
-    mae = mean_absolute_error(y_true, y_pred)
+    X_test = test_df[feature_columns]
+    y_test = test_df["amount"]
 
-    rmse = mean_squared_error(
-        y_true,
-        y_pred
-    ) ** 0.5
+    model = XGBRegressor(
+        n_estimators=500,
+        learning_rate=0.05,
+        max_depth=5,
+        subsample=0.8,
+        colsample_bytree=0.08,
+        obejctive="reg:squarederror",
+        random_state=42,
+    )
 
-    return {
+    model.fit(X_train, y_train)
+
+    predictions = model.predict(X_test)
+
+    predictions = predictions.clip(min=0)
+
+    comparison = test_df[["date", "product_name", "amount"]].copy()
+
+    comparison["predicted"] = predictions
+    comparison["error"] = comparison["amount"] - comparison["predicted"]
+    comparison["absolute_error"] = comparison["error"].abs()
+
+    mae = mean_absolute_error(y_test, predictions)
+
+    rmse = mean_squared_error(y_test, predictions) ** 0.5
+
+    return{
+        "model":model,
+        "features": feature_columns,
         "mae": mae,
         "rmse": rmse,
-    }
+        "comparison": comparison
+           }

@@ -1,22 +1,14 @@
 from src.data_loader import load_sales_data
-from src.model import create_baseline_predictions, evaluate_baseline
+from src.features import create_features
+from src.model import train_xgboost
 
+df = load_sales_data("data/synthetic_salmon_sales.csv")
 
-df = load_sales_data("data/fishmonger_sales.csv")
+df = create_features(df)
 
-df = create_baseline_predictions(df)
+results = train_xgboost(df)
 
-metrics = evaluate_baseline(df)
+print(f"MAE: {results['mae']:.2f}")
+print(f"RMSE: {results['rmse']:.2f}")
 
-print(
-    df[
-        [
-            "date",
-            "product",
-            "amount",
-            "baseline_prediction",
-        ]
-    ].head(20)
-)
-print(f"Baseline MAE: {metrics['mae']:.2f}")
-print(f"Baseline RMSE: {metrics['rmse']:.2f}")
+results["comparison"].to_csv("data/predictions.csv", index=False)
