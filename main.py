@@ -3,6 +3,7 @@ from src.features import create_features
 from src.model import train_xgboost
 from src.modules.input_prediction import prepare_prediction_row
 import pandas as pd
+import joblib
 
 
 
@@ -51,3 +52,6 @@ importance = importance.sort_values(
 )
 
 print(importance)
+
+joblib.dump(results["model"], "model/sales_model.pk1")
+joblib.dump(results["features"], "model/feature_columns.pk1")
