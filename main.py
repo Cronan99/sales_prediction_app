@@ -19,7 +19,7 @@ print(f"RMSE: {results['rmse']:.2f}")
 results["comparison"].to_csv("data/predictions.csv", index=False)
 
 PRICE = 10
-DATE = "2026-09-11"
+DATE = "2026-06-11"
 PRODUCT = "Salmon"
 
 prediction_row = prepare_prediction_row(
