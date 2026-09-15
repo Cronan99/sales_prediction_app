@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Sales Prediction</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <main>
+        <h1>Sales Prediction</h1>
+
+        <div>
+            <label for="product">Product</label>
+
+            <select id="product">
+                <option value="Salmon">Salmon</option>
+                <option value="Cod">Cod</option>
+                <option value="Haddock">Haddock</option>
+                <option value="Herring">Herring</option>
+                <option value="Mackerel">Mackerel</option>
+                <option value="Mussels">Mussels</option>
+                <option value="Shrimp">Shrimp</option>
+                <option value="Trout">Trout</option>
+            </select>
+        </div>
+
+        <div>
+            <label for="price">Price</label>
+
+            <input
+                id="price"
+                type="number"
+                step="0.01"
+                min="0"
+                placeholder="159.00"
+            >
+        </div>
+
+        <div>
+            <label for="date">Date</label>
+
+            <input
+                id="date"
+                type="date"
+            >
+        </div>
+
+        <button onclick="predictSales()">
+            Predict sales
+        </button>
+
+        <h2 id="result"></h2>
+
+    </main>
+
+    <script src="index.js"></script>
+
+</body>
+
+</html>
