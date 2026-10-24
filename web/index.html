@@ -11,52 +11,26 @@
 </head>
 
 <body>
+    <main class="page-shell">
+        <header class="page-header">
+            <div class="heading-group">
+                <p class="eyebrow">FISHMONGER / DAILY FORECAST</p>
+                <h1>Sales predictions</h1>
+            </div>
+            <div class="date-control">
+                <label for="date">Forecast date</label>
+                <input id="date" type="date">
+            </div>
+        </header>
 
-    <main>
-        <h1>Sales Prediction</h1>
-
-        <div>
-            <label for="product">Product</label>
-
-            <select id="product">
-                <option value="Salmon">Salmon</option>
-                <option value="Cod">Cod</option>
-                <option value="Haddock">Haddock</option>
-                <option value="Herring">Herring</option>
-                <option value="Mackerel">Mackerel</option>
-                <option value="Mussels">Mussels</option>
-                <option value="Shrimp">Shrimp</option>
-                <option value="Trout">Trout</option>
-            </select>
-        </div>
-
-        <div>
-            <label for="price">Price</label>
-
-            <input
-                id="price"
-                type="number"
-                step="0.01"
-                min="0"
-                placeholder="159.00"
-            >
-        </div>
-
-        <div>
-            <label for="date">Date</label>
-
-            <input
-                id="date"
-                type="date"
-            >
-        </div>
-
-        <button onclick="predictSales()">
-            Predict sales
-        </button>
-
-        <h2 id="result"></h2>
-
+        <section aria-label="Article sales predictions">
+            <div class="list-heading" aria-hidden="true">
+                <span>Article</span>
+                <span>Price per unit</span>
+                <span>Predicted sales</span>
+            </div>
+            <div id="product-list" class="product-list"></div>
+        </section>
     </main>
 
     <script src="script.js"></script>

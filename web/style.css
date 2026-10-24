@@ -1,43 +1,225 @@
-body {
-    font-family: Arial, sans-serif;
-    background: #f5f5f5;
-    margin: 0;
+:root {
+    color-scheme: light;
+    --ink: #1c302c;
+    --muted: #687772;
+    --line: #dce4de;
+    --paper: #f2f5ef;
+    --surface: #ffffff;
+    --green: #176b57;
+    --green-soft: #e5f1eb;
+    --coral: #d97655;
 }
 
-main {
-    max-width: 500px;
-    margin: 80px auto;
-    background: white;
-    padding: 40px;
-    border-radius: 12px;
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "Avenir Next", Avenir, "Segoe UI", sans-serif;
+}
+
+.page-shell {
+    width: min(100% - 48px, 1060px);
+    margin: 0 auto;
+    padding: 64px 0 80px;
+}
+
+.page-header {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: 32px;
+    padding-bottom: 32px;
+    border-bottom: 3px solid var(--ink);
+}
+
+.eyebrow {
+    margin: 0 0 12px;
+    color: var(--green);
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 1.4px;
 }
 
 h1 {
-    margin-top: 0;
+    margin: 0;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(34px, 5vw, 52px);
+    font-weight: 500;
+    line-height: 1.05;
 }
 
-div {
-    margin-bottom: 20px;
+.date-control {
+    display: grid;
+    gap: 8px;
+    min-width: 190px;
 }
 
-label {
+.date-control label,
+.list-heading {
+    color: var(--muted);
+    font-size: 11px;
+    font-weight: 750;
+    letter-spacing: 0.7px;
+    text-transform: uppercase;
+}
+
+.date-control input {
+    min-height: 42px;
+    padding: 8px 10px;
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    background: var(--surface);
+    color: var(--ink);
+    font: inherit;
+}
+
+.list-heading,
+.product-row {
+    display: grid;
+    grid-template-columns: minmax(150px, 0.9fr) minmax(250px, 1.7fr) minmax(150px, 0.8fr);
+    align-items: center;
+    gap: 28px;
+}
+
+.list-heading {
+    padding: 24px 18px 12px;
+}
+
+.list-heading span:last-child {
+    text-align: right;
+}
+
+.product-row {
+    min-height: 102px;
+    padding: 18px;
+    border-top: 1px solid var(--line);
+    background: var(--surface);
+    transition: background-color 160ms ease;
+}
+
+.product-row:nth-child(even) {
+    background: #fafbf8;
+}
+
+.product-name {
+    margin: 0;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 22px;
+    font-weight: 500;
+}
+
+.price-control {
+    min-width: 0;
+}
+
+.price-readout {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 9px;
+    font-variant-numeric: tabular-nums;
+}
+
+.price-value {
+    color: var(--ink);
+    font-size: 15px;
+    font-weight: 750;
+}
+
+.price-range {
+    color: var(--muted);
+    font-size: 11px;
+}
+
+.price-slider {
     display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
-}
-
-input,
-select {
     width: 100%;
-    box-sizing: border-box;
-    padding: 10px;
-}
-
-button {
-    padding: 12px 20px;
+    height: 18px;
+    margin: 0;
+    accent-color: var(--green);
     cursor: pointer;
 }
 
-#result {
-    margin-top: 30px;
+.prediction {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: baseline;
+    justify-self: end;
+    column-gap: 7px;
+    font-variant-numeric: tabular-nums;
+}
+
+.prediction-value {
+    color: var(--green);
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 29px;
+    line-height: 1;
+}
+
+.prediction-unit {
+    color: var(--muted);
+    font-size: 12px;
+}
+
+.prediction-status {
+    grid-column: 1 / -1;
+    justify-self: end;
+    margin-top: 6px;
+    color: var(--muted);
+    font-size: 10px;
+}
+
+.is-updating .prediction-value {
+    color: var(--coral);
+}
+
+input:focus-visible {
+    outline: 3px solid #e9a58d;
+    outline-offset: 3px;
+}
+
+@media (max-width: 640px) {
+    .page-shell {
+        width: min(100% - 32px, 500px);
+        padding-top: 36px;
+    }
+
+    .page-header {
+        align-items: start;
+        flex-direction: column;
+        gap: 24px;
+        padding-bottom: 24px;
+    }
+
+    .date-control {
+        width: 100%;
+    }
+
+    .list-heading {
+        display: none;
+    }
+
+    .product-row {
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 14px 18px;
+        padding: 18px 12px;
+    }
+
+    .product-name {
+        font-size: 20px;
+    }
+
+    .price-control {
+        grid-column: 1 / -1;
+        grid-row: 2;
+    }
+
+    .prediction {
+        grid-column: 2;
+        grid-row: 1;
+    }
 }

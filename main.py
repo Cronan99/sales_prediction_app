@@ -7,7 +7,7 @@ import joblib
 
 
 
-df = load_sales_data("data/fishmonger_sales.csv")
+df = load_sales_data("data/fishmonger_sales_2025.csv")
 
 df = create_features(df)
 
