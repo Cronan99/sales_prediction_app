@@ -220,4 +220,4 @@ __marimo__/
 # Dataset files
 
 *.csv
-*.pk1
+*.pkl

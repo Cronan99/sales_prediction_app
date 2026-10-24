@@ -3,9 +3,9 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
 import joblib
-import pandas as pd
 
 from src.modules.input_prediction import prepare_prediction_row
+from src.modules.data_loader import load_sales_data
 
 app = FastAPI()
 
@@ -17,12 +17,13 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-model = joblib.load("model/sales_model.pk1")
-feature_columns = joblib.load("model/feature_columns.pk1")
+model = joblib.load("model/sales_model.pkl")
+feature_columns = joblib.load("model/feature_columns.pkl")
 
-historical_df = pd.read_csv("data/fishmonger_sales.csv")
+DATASET = "data/butcher_shop_sales_2025_5500.csv"
+MAPPING = "retail_sales"
 
-historical_df["date"] = pd.to_datetime(historical_df["date"])
+historical_df = load_sales_data(DATASET, mapping=MAPPING)
 
 
 class PredictionRequest(BaseModel):
@@ -57,3 +58,19 @@ def predict_sales(request: PredictionRequest):
         "date": request.date,
         "predicted_sales": prediction
     }
+
+@app.get("/products")
+def get_products():
+    df = load_sales_data(DATASET, mapping=MAPPING)
+
+    products = []
+
+    for product, group in df.groupby("product"):
+        products.append({
+            "name": product,
+            "min": round(float(group["price"].min()), 2),
+            "max": round(float(group["price"].max()), 2),
+            "price": round(float(group["price"].median()), 2)
+        })
+
+    return products
